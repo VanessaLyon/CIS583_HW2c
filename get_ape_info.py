@@ -65,14 +65,3 @@ def get_ape_info(apeID):
         f"return value should include the keys 'owner', 'image' and 'eyes'"
     return data
 
-# Main function to test get_ape_info()
-def main():
-    # Test cases
-    ape_ids = [1, 5000, 10000]
-
-    for ape_id in ape_ids:
-        ape_info = get_ape_info(ape_id)
-        print(f"Ape ID: {ape_id}, Info: {ape_info}")
-
-if __name__ == "__main__":
-    main()
