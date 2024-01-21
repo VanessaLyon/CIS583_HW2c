@@ -7,8 +7,8 @@ import json
 # The file 'abi.json' has the ABI for the bored ape contract
 # In general, you can get contract ABIs from etherscan
 # https://api.etherscan.io/api?module=contract&action=getabi&address=0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D
-#with open('/home/codio/workspace/abi.json', 'r') as f:
-    #abi = json.load(f)
+# with open('/home/codio/workspace/abi.json', 'r') as f:
+#     abi = json.load(f)
 
 contract_address = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
 abi_endpoint = f"https://api.etherscan.io/api?module=contract&action=getabi&address={contract_address}"
@@ -31,7 +31,6 @@ except Exception as e:
 with open('/home/codio/workspace/abi.json', 'r') as f:
     abi_l = json.load(f)
 
-
 # Connect to an Ethereum node
 api_url = "https://eth-mainnet.alchemyapi.io/v2/7R8FD0Z9VuycQYgASfO5xsfAPsK21DJW"
 provider = HTTPProvider(api_url)
@@ -51,13 +50,15 @@ def get_ape_info(apeID):
     response = requests.get(token_uri)
     token_data = response.json()
 
+    # Print or log the token_data to inspect its content and field names
+    print("Token Data:", token_data)
+
     # Extract image and eyes data from token data
     image = token_data.get('image', '')
-    eyes = token_data.get('eyes', '')
+    attributes = token_data.get('attributes', [])
+    eyes = next((attr['value'] for attr in attributes if attr['trait_type'] == 'Eyes'), '')
 
     data = {'owner': owner, 'image': image, 'eyes': eyes}
-
-    print(data)
 
     assert isinstance(data, dict), f'get_ape_info{apeID} should return a dict'
     assert all([a in data.keys() for a in ['owner', 'image', 'eyes']]), \
